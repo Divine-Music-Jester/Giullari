@@ -1,0 +1,184 @@
+<html>
+<head><meta name="viewport" content="width=device-width, user-scalable=no" /></head>
+<body><pre>
+.Ingresso
+#In eterno Canterò
+/Servizio Nazionale della Musica e del Canto del Rinnovamento nello Spirito Santo
+
+>In eterno canterò la tua lode, mio Signor
+>Le mie labbra esalteranno la tua fedeltà
+>Io per sempre ti benedirò e annuncerò il tuo nome
+>In eterno io ti canterò
+>In eterno canterò la tua lode, mio Signor
+>Le mie labbra esalteranno la tua fedeltà
+>Io per sempre ti benedirò e annuncerò il tuo nome
+>In eterno io ti canterò
+Anche se la tempesta mi colpirà
+La mia lode, a te, Signore, si eleverà
+Sei tu la mia fiducia, io spero in te
+Tu sei il mio Signore, il mio re
+>In eterno canterò la tua lode, mio Signor
+>Le mie labbra esalteranno la tua fedeltà
+>Io per sempre ti benedirò e annuncerò il tuo nome
+>In eterno io ti canterò
+
+
+-----------------------
+
+.Gloria
+#Gloria Gen Verde
+>Gloria, gloria a Dio
+>gloria gloria nell'alto dei cie---li
+>Pace in terra agli uomini di buona volontà 
+>Glo--ria!
+Noi ti lodiamo, ti benediciamo, ti adoriamo, glorifichiamo te,
+ti rendiamo grazie per la tua immensa glo----ria
+Signore Dio, glo------ria, Re del Cielo, glo---ria
+Dio Padre, Dio onnipotente, glo------ria!
+>Gloria, gloria a Dio  gloria gloria nell'alto dei cie---li
+>Pace in terra agli uomini di buona volontà Glo--ria!
+/Signore, Figlio unigenito, Gesù Cristo,
+/Signore, Agnello di Dio,   Figlio del Padre
+/Tu che togli i peccati del mondo, abbi pietà di noi
+/Tu che togli i peccati del mondo accogli la nostra supplica
+/Tu che siedi alla destra del Padre, Abbi pietà di no---i
+>Gloria, gloria a Dio  gloria gloria nell'alto dei cie---li
+>Pace in terra agli uomini di buona volontà Glo--ria!
+Perché tu solo il Santo, il Signore Tu solo l'Altissimo, Cristo Gesù
+con lo Spirito Santo nella gloria del Pa------dre
+>Gloria, gloria a Dio 
+>gloria gloria nell'alto dei cie---li
+>Pace in terra agli uomini di buona volontà 
+>Glooooooria!
+</pre>
+	<div id="buttons">
+		<button id="zoomMinus">-</button>
+		<button id="zoomPlus">+</button>
+	</div>
+	<script>
+		var p = document.querySelector("pre");
+		p.style.display = "none";
+		var lines = p.textContent.split("\n");
+		var lastKlass = "";
+		
+		for (var i in lines) {
+			var line = lines[i].trim();
+			
+			if (line.length == 0) {
+				continue
+			}
+			
+			if (line.match(/^-+$/)) {
+				if (lastKlass != "") {
+					document.write("</p>");
+				}
+				document.write("<hr/>");
+				lastKlass = "";
+				continue;
+			}
+			
+			var klass = "strofa";
+			if (line[0] == ".") {
+				klass = "momento";
+				line = line.substr(1);
+			}
+			if (line[0] == "#") {
+				klass = "titolo";
+				line = line.substr(1);
+			}
+			if (line[0] == "/") {
+				klass = "bridge";
+				line = line.substr(1);
+			}
+			if (line[0] == ">") {
+				klass = "ritornello";
+				line = line.substr(1);
+			}
+			
+			if (klass != lastKlass) {
+				if (lastKlass != "") {
+					document.write("</p>");
+				}
+				document.write("<p class='" + klass + "'>");
+				lastKlass = klass;
+			}
+			
+			document.write(line + "<br/>");
+		}
+
+		document.write(line + "</p>");
+		
+		document.body.style.fontSize = "100%";
+		function zoom(delta) {
+			var s = parseInt(document.body.style.fontSize);
+			s += delta;
+			s = Math.max(s, 50);
+			s = Math.min(s, 200);
+			document.body.style.fontSize = s + "%";
+		}
+		
+		document.getElementById("zoomMinus").addEventListener("click", function(e) {
+			zoom(-10);
+		});
+		document.getElementById("zoomPlus").addEventListener("click", function(e) {
+			zoom(+10);
+		});
+	</script>
+	
+	<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Lato', sans-serif;
+			padding: 1rem;
+		}
+		
+		hr {
+			margin-top: 4rem;
+			margin-bottom: 4rem;
+		}
+		
+		p {
+			line-height: 150%;
+			margin-top: 0;
+			margin-bottom: 1rem;
+		}
+		
+		.titolo { 
+			font-weight: bold;
+			font-size: 250%; 
+			text-align: center;
+			font-variant: small-caps;
+		}
+		
+		.momento {
+			font-size: 100%; 
+			text-align: center;
+			margin-bottom: -1rem;
+		}
+		
+		.ritornello {
+			font-weight: bold;
+			margin-left: 1rem;
+		}
+		
+		.bridge {
+			font-style: italic;
+		}
+		
+		#buttons {
+			position: fixed;
+			text-align: right;
+			left: 1rem;
+			right: 1rem;
+			bottom: 1rem;
+		}
+		
+		button {
+			width: 3rem;
+			height: 3rem;
+			font-size: 2rem;
+			margin: 0.25rem;
+		}
+	</style>
+</body>
+</html>
